@@ -34,6 +34,12 @@ func cleanInput(text string) []string {
 
 func startPokedex() {
 	scanner := bufio.NewScanner(os.Stdin)
+	//Create config struct with next field set to the first page of location areas
+	startURL := "https://pokeapi.co/api/v2/location-area?offset=0&limit=20"
+	con := &config{
+		next:     &startURL,
+		previous: nil,
+	}
 
 	//infinite for loop to read user input until they exit
 	for {
@@ -43,7 +49,7 @@ func startPokedex() {
 			splitInput := cleanInput(input)
 			cmd, exists := getCommands()[splitInput[0]]
 			if exists {
-				err := cmd.callback()
+				err := cmd.callback(con)
 				if err != nil {
 					fmt.Printf("Error executing command: %v\n", err)
 				}
@@ -51,23 +57,4 @@ func startPokedex() {
 		}
 
 	}
-}
-
-func commandExit() error {
-	fmt.Println("Closing the Pokedex... Goodbye!")
-	os.Exit(0)
-	return nil
-}
-
-func commandHelp() error {
-	fmt.Println("Welcome to the Pokedex!")
-	fmt.Println("Usage:")
-
-	cmds := getCommands()
-
-	for _, cmd := range cmds {
-		fmt.Printf("  %s: %s\n", cmd.name, cmd.description)
-	}
-
-	return nil
 }
