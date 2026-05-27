@@ -13,6 +13,23 @@ func commandMap(con *config) error {
 		return fmt.Errorf("No more locations available")
 	}
 
+	// Check if the response is in the cache
+	if val, ok := con.cache.Get(*con.next); ok {
+		var locationAreas locationArea
+		if err := json.Unmarshal(val, &locationAreas); err != nil {
+			return fmt.Errorf("Error unmarshalling cached data: %v", err)
+		}
+		// Print location areas from the unmarshalled data
+		for _, location := range locationAreas.Results {
+			fmt.Printf("%s", location.Name)
+		}
+		//set previous to the current next url
+		//set next to the next url in the response body
+		con.previous = con.next
+		con.next = locationAreas.Next
+		return nil
+	}
+
 	res, err := http.Get(*con.next)
 	// error handling
 	if err != nil {
@@ -38,9 +55,13 @@ func commandMap(con *config) error {
 		fmt.Printf("%s", location.Name)
 	}
 
+	// Add the JSON response to the cache
+	con.cache.Add(*con.next, data)
+
 	//set previous to the current next url
 	//set next to the next url in the response body
 	con.previous = con.next
 	con.next = locationAreas.Next
+
 	return nil
 }
