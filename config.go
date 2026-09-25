@@ -11,4 +11,5 @@ type config struct {
 	next     *string
 	previous *string
 	cache    *pokecache.Cache
+	pokedex  map[string]pokemon
 }

@@ -47,6 +47,7 @@ func startPokedex() {
 		next:     &startURL,
 		previous: nil,
 		cache:    cache,
+		pokedex:  make(map[string]pokemon),
 	}
 
 	//infinite for loop to read user input until they exit
