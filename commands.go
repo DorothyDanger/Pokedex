@@ -6,7 +6,7 @@ This is the command's struct
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(*config) error
+	callback    func(*config, []string) error
 }
 
 /*
@@ -40,6 +40,11 @@ func getCommands() map[string]cliCommand {
 			name:        "mapb",
 			description: "Displays the previous 20 locations",
 			callback:    commandMapb,
+		},
+		"explore": {
+			name:        "explore",
+			description: "Enter the name of a location to reveal the Pokemon available in that area",
+			callback:    commandExplore,
 		},
 	}
 }

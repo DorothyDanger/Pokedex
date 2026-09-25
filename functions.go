@@ -55,9 +55,10 @@ func startPokedex() {
 		if scanner.Scan() {
 			input := scanner.Text()
 			splitInput := cleanInput(input)
+			args := splitInput[1:]
 			cmd, exists := getCommands()[splitInput[0]]
 			if exists {
-				err := cmd.callback(con)
+				err := cmd.callback(con, args)
 				if err != nil {
 					fmt.Printf("Error executing command: %v\n", err)
 				}

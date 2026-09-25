@@ -8,7 +8,7 @@ import (
 )
 
 // CommandMapb will print the previous 20 locations in the Pokedex
-func commandMapb(con *config) error {
+func commandMapb(con *config, _ []string) error {
 	if con.previous == nil {
 		return fmt.Errorf("No previous locations available")
 	}
@@ -21,7 +21,7 @@ func commandMapb(con *config) error {
 		}
 		// Print location areas from the unmarshalled data
 		for _, location := range locationAreas.Results {
-			fmt.Printf("%s", location.Name)
+			fmt.Printf("%s\n", location.Name)
 		}
 
 		// set next and previous in the config
@@ -53,7 +53,7 @@ func commandMapb(con *config) error {
 	}
 	// Print location areas from the unmarshalled data
 	for _, location := range locationAreas.Results {
-		fmt.Printf("%s", location.Name)
+		fmt.Printf("%s\n", location.Name)
 	}
 
 	// Add the JSON response to the cache

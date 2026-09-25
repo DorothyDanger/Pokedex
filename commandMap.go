@@ -8,7 +8,7 @@ import (
 )
 
 // CommandMap will print the next 20 locations in the Pokedex
-func commandMap(con *config) error {
+func commandMap(con *config, _ []string) error {
 	if con.next == nil {
 		return fmt.Errorf("No more locations available")
 	}
@@ -21,7 +21,7 @@ func commandMap(con *config) error {
 		}
 		// Print location areas from the unmarshalled data
 		for _, location := range locationAreas.Results {
-			fmt.Printf("%s", location.Name)
+			fmt.Printf("%s\n", location.Name)
 		}
 		//set previous to the current next url
 		//set next to the next url in the response body
@@ -52,7 +52,7 @@ func commandMap(con *config) error {
 	}
 	// Print location areas from the unmarshalled data
 	for _, location := range locationAreas.Results {
-		fmt.Printf("%s", location.Name)
+		fmt.Printf("%s\n", location.Name)
 	}
 
 	// Add the JSON response to the cache
