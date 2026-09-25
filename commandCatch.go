@@ -32,15 +32,16 @@ func commandCatch(con *config, args []string) error {
 		}
 		// Use base experience with math/rand to determine if the pokemon is caught
 		// Higher base experience = harder to catch
-		catchChance := rand.Intn(100)
-		if catchChance < pokemonData.BaseExperience {
+		catchChance := rand.Intn(pokemonData.BaseExperience)
+		if catchChance > 50 {
 			fmt.Printf("%s escaped!\n", pokemonName)
 		} else {
 			fmt.Printf("%s was caught!\n", pokemonName)
+			fmt.Printf("You may now inspect %s with the inspect command\n", pokemonName)
 			// Add the pokemon to the pokedex if caught
 			con.pokedex[pokemonName] = pokemonData
 		}
-
+		return nil
 	}
 
 	// If not in cache, make a request to the API
@@ -65,13 +66,14 @@ func commandCatch(con *config, args []string) error {
 	}
 	// Use base experience with math/rand to determine if the pokemon is caught
 	// Higher base experience = harder to catch
-	catchChance := rand.Intn(100)
-	if catchChance < pokemonData.BaseExperience {
+	catchChance := rand.Intn(pokemonData.BaseExperience)
+	if catchChance > 50 {
 		fmt.Printf("%s escaped!\n", pokemonName)
 		// Add to cache if pokemon escapes so a retry can be made without an API call
 		con.cache.Add(url, data)
 	} else {
 		fmt.Printf("%s was caught!\n", pokemonName)
+		fmt.Printf("You may now inspect %s with the inspect command\n", pokemonName)
 		// Add the pokemon to the pokedex if caught
 		con.pokedex[pokemonName] = pokemonData
 	}
